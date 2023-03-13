@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>External API</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      div.container {
+        display: flex;
+        background-color: rgb(243 243 243);
+        margin: 5px;
+        box-shadow: 0px 0px 5px 0px #b4b5b4;
+        padding-top: 12px;
+        border-radius: 5px;
+      }
+      div.txt {
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn">Get Github User</button>
+    <div id="users"></div>
+
+    <script>
+      const btn = document.getElementById("btn");
+      btn.addEventListener("click", getUser);
+
+      function getUser() {
+        const xht = new XMLHttpRequest();
+
+        xht.open("GET", "https://api.github.com/users", true);
+        xht.onload = function () {
+          const users = document.getElementById("users");
+          output = "";
+          if (this.status == 200) {
+            let result = JSON.parse(this.responseText);
+            console.log(result);
+            for (i in result) {
+              output += `
+                            <div class="container">
+                                <img src=${result[i].avatar_url} alt="image" height='100px' width='100px' />
+                                <div class = "txt">
+                                    <h3>Id: ${result[i].id}</h3>
+                                    <h3>Name: ${result[i].login}</h3>
+                                </div>
+                            </div>
+                        `;
+            }
+            users.innerHTML = output;
+          }
+        };
+
+        xht.send();
+      }
+    </script>
+  </body>
+</html>
