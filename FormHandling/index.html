@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX form handling</title>
+</head>
+<body>
+    <!-- Form submission using the GET method -->
+    <!-- start -->
+    <div>
+        <h2>Form handling without AJAX. Method: GET</h2>
+        <form action="proccessing.php" method="GET">
+            <input type="text" name="name" id="name" placeholder="Enter your name">
+            <input type="submit" value="Submit" name="submit">
+        </form>
+    </div>
+
+    <div>
+        <h2>Form handling with AJAX. Method: GET</h2>
+        <form id="form_submit">
+            <input type="text" name="name" id="name1" placeholder="Enter your name">
+            <input type="submit" value="Submit" name="submit">
+        </form>
+    </div>
+    <!-- end  -->
+
+    <!-- Form submission using the POST method  -->
+    <!-- start  -->
+    <div>
+        <h2>Form handling with AJAX. Method: POST</h2>
+        <form action="proccessing.php" method="POST">
+            <input type="text" name="username" id="username" placeholder="Enter username">
+            <input type="submit" name="submit1" value="Submit">
+        </form>
+    </div>
+    <div>
+        <h2>Form handling with AJAX. Method: POST</h2>
+        <form id="post_submit">
+            <input type="text" name="username" id="username1" placeholder="Enter username">
+            <input type="submit" name="submit1" value="Submit">
+        </form>
+    </div>
+    <!-- end  -->
+
+    <script>
+        const formName = document.getElementById('form_submit');
+        formName.addEventListener('submit', getName);
+
+        function getName(e) {
+            e.preventDefault();
+            const name = document.getElementById('name1').value;
+            console.log(name);
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "proccessing.php?name="+name, true);
+            xhr.onload = function() {
+                if(this.status == 200) {
+                    console.log(this.responseText);
+                }
+            }
+            
+            xhr.send();
+        }
+        
+        const postName = document.getElementById('post_submit');
+        postName.addEventListener("submit", postUserName);
+        
+        function postUserName(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById("username1").value;
+            console.log(username);
+            let params = "username="+username;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "proccessing.php", true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if(this.status == 200) {
+                    console.log(this.responseText);
+                }
+            }
+
+            xhr.send(params);
+        }
+
+    </script>
+</body>
+</html>
